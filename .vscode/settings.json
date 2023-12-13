@@ -1,0 +1,9 @@
+{
+    "python.analysis.extraPaths": [
+        "./apps"
+    ],
+    "editor.tabSize": 4,
+    "python.envFile": "${workspaceFolder}/venv",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true
+}

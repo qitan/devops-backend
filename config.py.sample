@@ -1,0 +1,204 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@Author : Charles Lai
+@Contact : qqing_lai@hotmail.com
+@Time : 2020/9/15 下午1:58
+@FileName: config.py
+@Blog ：https://imaojia.com
+"""
+
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent
+DEBUG = True
+SECRET_KEY = '7f=5@e+a=b(ghm-l*mtc_ile60xuvxqi(l5y$3&gfpk1!)3_4v'
+ALLOWED_HOSTS = ['*']
+DATE_FORMAT = '%Y-%m-%d'
+DATETIME_FORMAT = f'{DATE_FORMAT} %H:%M:%S'
+
+# 数据库连接信息
+DATABASES_CONFIG = {
+    'NAME': 'ydevopsdb',
+    'HOST': '127.0.0.1',
+    'PORT': 43306,
+    'USER': 'devops',
+    'PASSWORD': 'ops123456',
+}
+
+# 日志配置
+LOG_CONFIG = {
+    'level': 'INFO',
+    'size': 300 * 1024 * 1024,  # 日志大小
+    'backup': 7  # 日志保留份数
+}
+
+# token时间
+TOKEN_TIME = {
+    'ACCESS': {
+        'minutes': 5
+    },
+    'REFRESH': {
+        'minutes': 30
+    }
+}
+
+# url白名单
+URL_WHITELIST = [
+    '/api/user/profile/info/',
+    '/api/user/profile/menus/',
+    '/api/user/login/',
+    '/api/user/logout/',
+    '/api/user/refresh/'
+]
+
+REDIS_CONFIG = {
+    'host': '127.0.0.1',
+    'port': 6379,
+    'db': 10,
+    'password': 'ops123456'
+}
+
+STARTUP_NODES = [
+    {'host': '127.0.0.1', 'port': 7379},
+    {'host': '127.0.0.1', 'port': 7479},
+    {'host': '127.0.0.1', 'port': 7579},
+    {'host': '127.0.0.1', 'port': 7679},
+    {'host': '127.0.0.1', 'port': 7779},
+    {'host': '127.0.0.1', 'port': 7879},
+]
+
+REDIS_CLUSTER_CONFIG = {
+    'startup_nodes': STARTUP_NODES,
+    'password': 'ops123456'
+}
+
+CELERY_CONFIG = {
+    'queue': 'celery',
+    'broker_url': {
+        'host': '127.0.0.1',
+        'port': 6379,
+        'db': 4,
+        'password': 'ops123456'
+    },
+    'result_backend': {
+        'host': '127.0.0.1',  # redis单机
+        'port': 6379,
+        'db': 7,
+        'startup_nodes': STARTUP_NODES,  # redis集群
+        'password_cluster': 'ops123456',
+        'password': 'ops123456'
+    },
+}
+
+CACHE_CONFIG = {
+    'host': '127.0.0.1',  # 单机redis
+    'port': '6379',
+    'db': '5',
+    'KEY_PREFIX': 'localdev',
+    'startup_nodes': STARTUP_NODES,  # 集群redis
+    'password': 'ops123456'
+}
+
+CHANNEL_CONFIG = {
+    'host': '127.0.0.1',
+    'port': '6379',
+    'db': '6',
+    'password': 'ops123456'
+}
+
+Q_CLUSTER_CONFIG = {
+    'workers': 4,
+    'recycle': 500,
+    'timeout': 600,
+    'save_limit': 0,
+    'queue_limit': 1000,
+    'sync': False,  # 本地调试可以修改为True，使用同步模式
+}
+
+MEDIA_ROOT = './media'
+
+UPLOAD_ROOT = './media/upload'
+UPLOAD_PATH = 'upload'
+PLAYBOOK_PATH = './media/playbook'
+
+COMPANY = '爱猫家'
+# 生产环境标识
+PROD_TAG = 'prod'
+
+# ES配置
+ELASTICSEARCH_CONFIG = {
+    'local': {
+        'host': ['localhost:9200'],
+        'username': '',
+        'password': '',
+        'ssl': False,
+        'timeout': 30
+    },
+    'prod': {
+        'host': [],
+        'username': '',
+        'password': '',
+        'ssl': False,
+        'timeout': 30
+    }
+}
+ELASTICSEARCH = ELASTICSEARCH_CONFIG['local']
+# 平台索引前缀
+ELASTICSEARCH_PREFIX = 'ydevops-'
+# CMDB资产上传/上报源数据及导入结果索引
+CMDB_SOURCE_INDEX = ELASTICSEARCH_PREFIX + 'cmdbupload'
+
+# 云平台AK/SK
+# 阿里云
+ALI_CONFIG = {
+    'key': '',
+    'secret': '',
+    'region': 'cn-shanghai'
+}
+# Tencent
+TENCENT_CONFIG = {
+    'key': '',
+    'secret': '',
+    'region': 'ap-shanghai'
+}
+# AWS
+AWS_CONFIG = {
+    'access_id': '',
+    'access_key': '',
+    'region': 'sa-east-1',
+    'owners': ''
+}
+
+GITLAB_ADMIN_TOKEN = ''
+
+CONFIG_CENTER_DEFAULT_USER = 'apollo'
+CONFIG_CENTER_DEFAULT_PASSWD = 'admin'
+
+PROXY_CONFIG = {
+    'http': 'http://',  # 留空不启用代理
+    'https': 'http://'  # 留空不启用代理
+}
+
+OSS_CONFIG = {
+    'key': '',
+    'secret': '',
+    'bucket': '',
+    'endpoint': '',
+}
+
+PHONE_CONFIG = {
+    'prod_id': 0
+}
+
+TEST_CONSUL_CONFIG = {
+    'url': '',
+    'token': '',
+}
+
+# 日志配置
+BASE_LOG_DIR = os.path.join(BASE_DIR, 'logs')
+
+# elasticsearch查询日志下载路径
+ES_LOG_DOWNLOAD_URL = 'log/download'

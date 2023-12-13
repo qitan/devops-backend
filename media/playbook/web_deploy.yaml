@@ -1,0 +1,43 @@
+---
+- hosts: "{{ hosts }}"
+  gather_facts: no
+  vars:
+    # 中转机器仓库
+    forward_dest: "/data/webtrans/{{ dest_env }}/{{ app_name }}/"
+    # 静态文件源路径
+    src_path: "/data/nfs/web/{{ src_env }}/{{ app_name }}/{{ src_tag }}"
+    # 生产仓库
+    reg_path: "/data/nfs/web/{{ dest_env }}/{{ app_name }}"
+
+  tasks:
+    - name: 创建同步目录
+      file:
+        path: "{{ forward_dest }}"
+        state: directory
+
+    - name: 创建生产仓库目录
+      file:
+        path: "{{ reg_path }}"
+        state: directory
+
+    - name: 同步静态文件到生产仓库
+      synchronize:
+        src: "{{ src_path }}"
+        dest: "{{ reg_path }}/"
+        rsync_opts:
+          - "-azP"
+          - "--exclude=.git"
+      delegate_to: 127.0.0.1
+
+    - name: 同步静态文件到中转机器
+      synchronize:
+        src: "{{ src_path }}"
+        dest: "{{ forward_dest }}"
+        rsync_opts:
+          - "-azP"
+          - "--exclude=.git"
+      become: no
+
+    - name: 同步静态文件到Nginx机器
+      shell: "ssh {{ item }} mkdir -p {{ dest }};/usr/bin/rsync -azP {{ forward_dest }}/{{ src_tag }}/ {{ item }}:{{ dest }}"
+      with_items: "{{ target_hosts }}"

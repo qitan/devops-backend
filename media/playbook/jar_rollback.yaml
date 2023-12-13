@@ -1,0 +1,14 @@
+---
+- hosts: "{{ hosts }}"
+  gather_facts: no
+  vars:
+    forward_dest: "/tmp/webtrans/{{ dest_env }}/{{ app_name }}/"
+    # 静态文件源路径
+    src_path: "/data/nfs/web/{{ src_env }}/{{ app_name }}/{{ src_tag }}"
+    # 生产仓库
+    reg_path: "/tmp/{{ dest_env }}/{{ app_name }}"
+
+  tasks:
+    - name: 目标主机JAR包回退
+      shell: "ssh {{ item }} echo rollback && sleep 15"
+      with_items: "{{ target_hosts }}"

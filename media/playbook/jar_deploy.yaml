@@ -1,0 +1,27 @@
+---
+- hosts: "{{ hosts }}"
+  gather_facts: no
+  vars:
+    # 静态文件源路径
+    src_path: "/data/nfs/web/{{ src_env }}/{{ app_name }}/{{ src_tag }}"
+    # 生产仓库
+    reg_path: "/data/nfs/web/{{ dest_env }}/{{ app_name }}"
+
+  tasks:
+    - name: 创建生产仓库目录
+      file:
+        path: "{{ reg_path }}"
+        state: directory
+
+    - name: 同步JAR包到生产仓库
+      synchronize:
+        src: "{{ src_path }}"
+        dest: "{{ reg_path }}/"
+        rsync_opts:
+          - "-azP"
+          - "--exclude=.git"
+      delegate_to: 127.0.0.1
+
+    - name: 同步JAR包到目标主机
+      shell: "ssh {{ item }} mkdir -p {{ dest }};/usr/bin/rsync -azP {{ reg_path }}/{{ src_tag }}/ {{ item }}:{{ dest }}"
+      with_items: "{{ target_hosts }}"
