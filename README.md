@@ -1,3 +1,19 @@
+## 演示环境
+运维平台演示 https://demo.imaojia.com/
+
+## 功能预览
+登录页及Dashboard  
+![登录及Dashborad](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-login-dashboard.gif)  
+CMDB产品应用管理、流水线及kubernetes模板编排  
+![cmdb模块](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-cmdb.gif)  
+CICD持续构建部署  
+![cicd模块](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-cicd.gif)  
+![cicd实时日志](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-cilog.gif)  
+应用重启、构建发布日志、容器配置及上下线  
+![应用操作](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-app-extra.gif)  
+工单流程管理  
+![工单管理](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-wflow.gif)  
+
 ## 环境依赖
 
 * Python 3.9
