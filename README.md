@@ -14,6 +14,26 @@ CICD持续构建部署
 工单流程管理  
 ![工单管理](https://github.com/qitan/devops-backend-lite/blob/main/preview/a-wflow.gif)  
 
+## Docker部署(功能体验)
+
+镜像打包
+```
+docker build -t docker.imaojia.com/allinone/devops-backend:ce1.0 --build-arg 'APP=devops-backend' -f Dockerfile .
+docker run -it --name t1 -p 10000:80 -v `pwd`/config.py:/app/devops-backend/config.py -d docker.imaojia.com/allinone/devops-backend:ce1.0
+```
+
+初始数据
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py initdata --type all
+```
+
+创建管理员
+```
+python manage.py createsuperuser
+```
+
 ## 环境依赖
 
 * Python 3.9

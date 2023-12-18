@@ -141,4 +141,3 @@ dbapp/migrations/*
 static/
 soar
 a.py
-Dockerfile
