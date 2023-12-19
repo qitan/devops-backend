@@ -7,6 +7,7 @@
 @FileName: views.py
 @Blog ：https://imaojia.com
 """
+import hashlib
 from django.core.cache import cache
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
@@ -372,7 +373,10 @@ class UserViewSet(CustomModelViewSet):
         """
         data = self.request.data
         user = self.queryset.get(pk=data['uid'])
-        user.set_password(data['password'])
+        m = hashlib.md5()
+        m.update(data['password'])
+        password = m.hexdigest()
+        user.set_password(password)
         user.save()
 
         log_audit(request, action_type=self.serializer_class.Meta.model.__name__, action='密码修改',

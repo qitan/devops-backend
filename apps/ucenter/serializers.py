@@ -8,6 +8,7 @@
 @Blog ：https://imaojia.com
 """
 
+import hashlib
 from rest_framework import serializers
 from rest_framework.utils import model_meta
 
@@ -52,6 +53,10 @@ class MenuListSerializers(ModelSerializer):
     children = RecursiveField(
         read_only=True, required=False, allow_null=True, many=True)
     meta = serializers.SerializerMethodField()
+    value = serializers.SerializerMethodField()
+
+    def get_value(self, instance):
+        return str(instance.id)
 
     def get_meta(self, instance):
         return {'title': instance.title, 'icon': instance.icon, 'activeMenu': instance.activeMenu,
@@ -271,7 +276,10 @@ class UserProfileSerializers(ModelSerializer):
         roles = validated_data.pop('roles')
         departments = validated_data.pop('department')
         instance = UserProfile.objects.create(**validated_data)
-        instance.set_password(validated_data['password'])
+        m = hashlib.md5()
+        m.update(validated_data['password'])
+        password = m.hexdigest()
+        instance.set_password(password)
         instance.save()
         instance.department.set(departments)
         instance.roles.set(roles)
